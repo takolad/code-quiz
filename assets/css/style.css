@@ -1,0 +1,30 @@
+.container-fluid {
+    position: fixed;
+}
+
+#startButton {
+    background-color: #008CBA;
+    color: white;
+}
+
+#startButton:hover {
+    background-color: white;
+    color: #008CBA;
+}
+
+#question {
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+#answers button {
+    border-radius: .25rem;
+}
+
+.answerButtons {
+    display: inline-grid;
+}
+
+.answerButtons button {
+    margin-bottom: 1.5rem;
+}

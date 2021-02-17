@@ -12,6 +12,9 @@
 
     <!-- External Stylesheet -->
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- jQuery CDN c/o Google -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <container class="container-fluid">
@@ -31,16 +34,20 @@
 
         <section class="row mt-5 text-center ms-0 mx-0 d-flex justify-content-center">
             <div class="col-3"></div>   <!-- Empty for layout -->
-            <div class="col-6 h2" id="question">
+            <div class="col-6 h4" id="question">
+                Your mission, should you choose to accept it, is to take a quiz and answer some code-related questions.<br/> Take care, 
+                you are being timed and any incorrect answers will be penalized, your score and time shall suffer!
             </div>
             <div class="col-3"></div>   <!-- Empty for layout -->
 
             <div class="col-3"></div>   <!-- Empty for layout -->
-            <div class="col-6 h4" id="answers">
+            <div class="col-6 h6" id="answers">
+                <button class="button" id="startButton">Start Quiz</button>
             </div>
             <div class="col-3"></div>   <!-- Empty for layout -->
         </section>
 
     </container>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
