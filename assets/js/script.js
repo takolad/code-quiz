@@ -18,13 +18,16 @@ var questionFieldEl = $('#question');
 var answersFieldEl = $('#answers');
 var startButtonEl = $('#startButton');
 var reloadButtonEl = $('<button>)').attr('id', 'reloadButton').text('Try Again');
+var tempTextEl = $('<div>').attr('id', 'highscoreDiv');
+
 
 // should hold an array of objects (userStats)
 var savedHighscores = JSON.parse(localStorage.getItem('stats'));
 // temporary storage to later assign to localStorage
 var highScores = [];
+var correctInx;
 
-if(typeof(savedHighscores) !== undefined) {
+if(typeof(savedHighscores) !== 'undefined' && savedHighscores != null) {
     highScores = savedHighscores;
 }
 
@@ -38,9 +41,9 @@ var running = false;
 
 var quizItems = [
     {
-        question: "How Now?",
-        answers: ["Brown Cow", "Horsey Sauce", "Burger", "Fries"],
-        correctInx: 0
+        question: "JSON stands for:",
+        answers: ["JavaScript Output Notation", "JavaStyle Option Notes", "Java Standard Output Navigation", "JavaScript Object Notation"],
+        correctInx: 3
     },
     {
         question: "Question 2",
@@ -48,8 +51,8 @@ var quizItems = [
         correctInx: 2
     },
     {
-        question: "Question 3",
-        answers: ["Dummy1", "Dummy2", "Dummy3", "Dummy4"],
+        question: "What can be used use to store data?",
+        answers: ["Barrels", "Variables", "Functions", "Booleans"],
         correctInx: 1
     },
     {
@@ -64,21 +67,10 @@ var quizItems = [
     }
 ]
 
-// object to hold users initials, highscore, and index for when assigning to array _highScores_
+// object to hold users initials and highscore before pushing to array _highScores_
 var userStats = {
     initials: "",
-    // time remaining is the score
-    score: 0,
-    index: 0,
-    // incrementIndex : function() {
-    //     this.index++;
-    // },
-    // setScore : function(updateScore) {
-    //     this.score = updateScore;
-    // },
-    // setInitials : function(updateInitials) {
-    //     this.initials = updateInitials;
-    // }
+    score: 0    // time remaining is the score
 }
 
 //initialization programming
@@ -87,22 +79,9 @@ function init() {
     startButtonEl.hide();
     timer = setInterval(displayTimer, 1000);    // starts countdown
     questionFieldEl.text("");   // Clears question field of intro text
-    while (running) {
-        if (currentQuestion < quizItems.length) {
-            getQuestion();
-            currentQuestion++;
-        } else {
-            running = false;
-        }
-    }
-    // increment currentQ here? or...
+    // if (currentQuestion < quizItems.length) {
+        getQuestion();
 }
-
-// PROBABLY won't use this, but maaaaybe?
-// // Returns a random number between 0 and max - 1
-// function randomNum(max) {
-//     return Math.floor(Math.random() * max);
-// }
 
 // start button event listener
 startButtonEl.on('click', function(){
@@ -117,6 +96,8 @@ reloadButtonEl.on('click', function(){
 // Create a submit event listener located in the answerField
 answersFieldEl.on('click', '#submitId', handleFormSubmit);
 
+
+
 function handleFormSubmit(event){
     event.preventDefault();
     // alert("Submit clicked");
@@ -124,7 +105,10 @@ function handleFormSubmit(event){
     var usersInitials = $('input[name="initialsText"]').val();
     userStats.initials = usersInitials;
     userStats.score = timeCount;
+    console.log("highScores is: " + highScores);
+    // add current user stats to array
     highScores.push(userStats);
+    // saves array 
     saveData();
 }
 
@@ -132,7 +116,7 @@ function handleFormSubmit(event){
 
 // when user clicks start: display timer, pick random question and display it
 function displayTimer() {
-    timerFieldEl.text(timeCount);
+    timerFieldEl.text(timeCount - 1);
     timeCount--;
     if (timeCount < 0) {
         clearInterval(timer);
@@ -141,25 +125,32 @@ function displayTimer() {
 }
 
 function getQuestion() {
-    var allButtonsEl = $('<div>');
-    allButtonsEl.addClass('answerButtons');
-    questionFieldEl.text(quizItems[currentQuestion].question);
-
-    for (var i = 0; i < 4; i++) {
-        var buttonEl = $('<button>');
-        buttonEl.text(quizItems[currentQuestion].answers[i]);
-        buttonEl.attr('name', 'button' + i);
-        allButtonsEl.append(buttonEl);
+    if (currentQuestion < quizItems.length) {
+        var allButtonsEl = $('<div>');
+        allButtonsEl.addClass('answerButtons');
+        questionFieldEl.text(quizItems[currentQuestion].question);
+        for (var i = 0; i < 4; i++) {
+            var buttonEl = $('<button>');
+            buttonEl.text(quizItems[currentQuestion].answers[i]);
+            buttonEl.attr('id', 'button' + i);
+            allButtonsEl.append(buttonEl);
+        }
+        answersFieldEl.append(allButtonsEl);
+        ansButtonsEl = $('.answerButtons');
+        correctInx = quizItems[currentQuestion].correctInx;
+    
+        // event handler for answer buttons
+        ansButtonsEl.on('click', handleQuestions);
+    } else {
+        endGame();
     }
-    answersFieldEl.append(allButtonsEl);
-    endGame();
-    // increment currentQuestion here? or in calling function
 }
 
 function endGame() {
-    clearInterval(timer);
     questionFieldEl.text("All done!");
     answersFieldEl.text("");
+    clearInterval(timer);
+    displayTimer();
     if (timeCount > 0) {
         answersFieldEl.text("Your final score is: " + timeCount);
 
@@ -175,14 +166,36 @@ function endGame() {
     }
 }
 
-function handleQuestions() {
+function handleQuestions(event) {
     // handle user clicking answer
-    // if correct, increment score
-        // if not end of question, move to next question
-            // else end quiz
-    // else decrement score AND time
+    var clickEvent = event.target;
+    var clickId = clickEvent.getAttribute('id');
+
+
+    if (clickId === ('button' + correctInx)) {
+        console.log("correct answer");
+        timeCount = timeCount + 3;
+        if (currentQuestion < quizItems.length) {
+            currentQuestion++;
+            answersFieldEl.text("");
+            getQuestion();
+        } else {
+            endGame();
+        }
+    } else {
+        console.log("wrong answer");
+        timeCount = timeCount - 10;
+        if (currentQuestion < quizItems.length) {
+            currentQuestion++;
+            answersFieldEl.text("");
+            getQuestion();
+        } else {
+            endGame();
+        }
+    }
 }
 
+// Saves users stats to localStorage by way of JSON stringify
 function saveData() {
     localStorage.setItem('stats', JSON.stringify(highScores));
     answersFieldEl.text('');
@@ -192,10 +205,21 @@ function saveData() {
 }
 
 
-
-
-// When game completes, ask for user initials
-    // store as an array of objects
-    // add (.push(newScore)) to score array
-    // store scores in localStorage
-    // clearInterval(intervalObject)
+// To display highscores in highscores.html
+$('section.highScores').ready(function() {
+    if ($('body').is('.highscoreBody')) {
+        var scoreLocation = $('.highscores');
+        var counter = 0;
+        console.log("highscores!");
+        highScores.sort((a,b) => (a.score > b.score) ? 1 : -1);
+        Object.keys(highScores).forEach(key => {
+            tempTextEl.text(counter + ": ");
+            tempTextEl.text(highScores[key].initials + " " + highScores[key].score);
+            scoreLocation.append(tempTextEl);
+            console.log("foreach key called");
+        });
+        // scoreLocation.text(array.forEach(element => {
+            
+        // }));
+    }
+});
