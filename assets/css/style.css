@@ -28,3 +28,26 @@
 .answerButtons button {
     margin-bottom: 1.5rem;
 }
+
+.highscores {
+    /* text-align: center; */
+    width: 35%;
+    display: flex;
+    margin: auto;
+    margin-top: 3rem;
+    background-color: lightgray;
+}
+
+.highscores div {
+    width: 100%;
+    text-align-last: justify;
+}
+
+.highscores p{
+    padding: .5rem 1.5rem;
+    margin: 0;
+}
+
+.highscores p:not(:last-child) {
+    border-bottom: solid .01rem black;
+}

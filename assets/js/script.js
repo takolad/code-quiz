@@ -18,6 +18,7 @@ var questionFieldEl = $('#question');
 var answersFieldEl = $('#answers');
 var startButtonEl = $('#startButton');
 var reloadButtonEl = $('<button>)').attr('id', 'reloadButton').text('Try Again');
+var highscoreSectionEl = $('#highscores');
 var tempTextEl = $('<div>').attr('id', 'highscoreDiv');
 
 
@@ -210,14 +211,17 @@ $('section.highScores').ready(function() {
     if ($('body').is('.highscoreBody')) {
         var scoreLocation = $('.highscores');
         var counter = 0;
+        // make a table > tr > th/ > /tr > tr > td/ > /tr /table
+
         console.log("highscores!");
         highScores.sort((a,b) => (a.score > b.score) ? 1 : -1);
         Object.keys(highScores).forEach(key => {
-            tempTextEl.text(counter + ": ");
-            tempTextEl.text(highScores[key].initials + " " + highScores[key].score);
+            tempTextEl.append("<p>" + highScores[key].initials + " " + highScores[key].score);
             scoreLocation.append(tempTextEl);
-            console.log("foreach key called");
+            counter++;
+            // console.log("foreach key called");
         });
+        highscoreSectionEl.append($('<button id="eraseButton">'));
         // scoreLocation.text(array.forEach(element => {
             
         // }));
