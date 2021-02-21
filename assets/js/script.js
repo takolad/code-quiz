@@ -47,23 +47,23 @@ var quizItems = [
         correctInx: 3
     },
     {
-        question: "Question 2",
-        answers: ["Dummy1", "Dummy2", "Dummy3", "Dummy4"],
+        question: "To write into the browser console use:",
+        answers: ["console.print()", "console.show()", "console.log()", "console.me()"],
         correctInx: 2
     },
     {
-        question: "What can be used use to store data?",
-        answers: ["Barrels", "Variables", "Functions", "Booleans"],
+        question: "What is used to separate JavaScript statements?",
+        answers: ["Colons (:)", "Semicolons (;)", "Question Marks (?)", "Commas (,)"],
         correctInx: 1
     },
     {
-        question: "Question 4",
-        answers: ["Dummy1", "Dummy2", "Dummy3", "Dummy4"],
-        correctInx: 3
+        question: "With JavaScript, these can be used to store data:",
+        answers: ["Vegetables", "Keywords", "Kettles", "Variables"],
+        correctInx: 0
     },
     {
-        question: "Question 5",
-        answers: ["Dummy1", "Dummy2", "Dummy3", "Dummy4"],
+        question: "Given x = 8, which comparison is true:",
+        answers: ["x !== 8", "x === 8", "x === \"8\"", "x == Eight"],
         correctInx: 1
     }
 ]
