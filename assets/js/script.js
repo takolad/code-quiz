@@ -18,7 +18,8 @@ var questionFieldEl = $('#question');
 var answersFieldEl = $('#answers');
 var startButtonEl = $('#startButton');
 var reloadButtonEl = $('<button>)').attr('id', 'reloadButton').text('Try Again');
-var highscoreSectionEl = $('#highscores');
+// var highscoreSectionEl = $('.highscores');
+var containerClassEl = $('.container-fluid');
 var tempTextEl = $('<div>').attr('id', 'highscoreDiv');
 
 
@@ -33,7 +34,7 @@ if(typeof(savedHighscores) !== 'undefined' && savedHighscores != null) {
 }
 
 // timer length setting (in seconds)
-var timeCount = 60;
+var timeCount = 10;
 var timer;
 // tracks current question
 var currentQuestion = 0;
@@ -59,7 +60,7 @@ var quizItems = [
     {
         question: "With JavaScript, these can be used to store data:",
         answers: ["Vegetables", "Keywords", "Kettles", "Variables"],
-        correctInx: 0
+        correctInx: 3
     },
     {
         question: "Given x = 8, which comparison is true:",
@@ -101,12 +102,10 @@ answersFieldEl.on('click', '#submitId', handleFormSubmit);
 
 function handleFormSubmit(event){
     event.preventDefault();
-    // alert("Submit clicked");
 
     var usersInitials = $('input[name="initialsText"]').val();
     userStats.initials = usersInitials;
     userStats.score = timeCount;
-    console.log("highScores is: " + highScores);
     // add current user stats to array
     highScores.push(userStats);
     // saves array 
@@ -117,9 +116,10 @@ function handleFormSubmit(event){
 
 // when user clicks start: display timer, pick random question and display it
 function displayTimer() {
-    timerFieldEl.text(timeCount - 1);
     timeCount--;
-    if (timeCount < 0) {
+    timerFieldEl.text(timeCount);
+    if (timeCount <= 0) {
+        timerFieldEl.text(0);
         clearInterval(timer);
         endGame();
     }
@@ -151,8 +151,8 @@ function endGame() {
     questionFieldEl.text("All done!");
     answersFieldEl.text("");
     clearInterval(timer);
-    displayTimer();
     if (timeCount > 0) {
+        displayTimer();
         answersFieldEl.text("Your final score is: " + timeCount);
 
         let initialField = $('<div>').attr('id', 'initialDiv');
@@ -167,14 +167,12 @@ function endGame() {
     }
 }
 
+// handles user clicking an answer
 function handleQuestions(event) {
-    // handle user clicking answer
     var clickEvent = event.target;
     var clickId = clickEvent.getAttribute('id');
 
-
-    if (clickId === ('button' + correctInx)) {
-        console.log("correct answer");
+    if (clickId === ('button' + correctInx)) { // Correct Answer, reward 3 seconds
         timeCount = timeCount + 3;
         if (currentQuestion < quizItems.length) {
             currentQuestion++;
@@ -183,8 +181,7 @@ function handleQuestions(event) {
         } else {
             endGame();
         }
-    } else {
-        console.log("wrong answer");
+    } else { // Incorrect Answer, deduct 10 seconds
         timeCount = timeCount - 10;
         if (currentQuestion < quizItems.length) {
             currentQuestion++;
@@ -211,9 +208,8 @@ $('section.highScores').ready(function() {
     if ($('body').is('.highscoreBody')) {
         var scoreLocation = $('.highscores');
         var counter = 0;
-        // make a table > tr > th/ > /tr > tr > td/ > /tr /table
 
-        console.log("highscores!");
+        // sorting, not yet functioning properly
         highScores.sort((a,b) => (a.score > b.score) ? 1 : -1);
         Object.keys(highScores).forEach(key => {
             tempTextEl.append("<p>" + highScores[key].initials + " " + highScores[key].score);
@@ -221,9 +217,7 @@ $('section.highScores').ready(function() {
             counter++;
             // console.log("foreach key called");
         });
-        highscoreSectionEl.append($('<button id="eraseButton">'));
-        // scoreLocation.text(array.forEach(element => {
-            
-        // }));
+        containerClassEl.append($('<hr><button id="eraseButton">Erase Data</button>')); // does nothing rn
+
     }
 });

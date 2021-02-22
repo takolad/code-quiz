@@ -51,3 +51,8 @@
 .highscores p:not(:last-child) {
     border-bottom: solid .01rem black;
 }
+
+#eraseButton {
+    position: sticky;
+    left: 33%;
+}
