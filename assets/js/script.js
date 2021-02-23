@@ -209,15 +209,18 @@ $('section.highScores').ready(function() {
         var scoreLocation = $('.highscores');
         var counter = 0;
 
-        // sorting, not yet functioning properly
-        highScores.sort((a,b) => (a.score > b.score) ? 1 : -1);
+        // sorts highscores by score desc
+        highScores.sort((a,b) => (a.score < b.score) ? 1 : -1);
         Object.keys(highScores).forEach(key => {
             tempTextEl.append("<p>" + highScores[key].initials + " " + highScores[key].score);
             scoreLocation.append(tempTextEl);
             counter++;
-            // console.log("foreach key called");
         });
         containerClassEl.append($('<hr><button id="eraseButton">Erase Data</button>')); // does nothing rn
 
+        // Erase button handler, clears saved stats from localStorage
+        $('#eraseButton').on('click', function(){
+            localStorage.clear('stats');
+        });
     }
 });
