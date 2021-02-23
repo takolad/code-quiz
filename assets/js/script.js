@@ -18,7 +18,6 @@ var questionFieldEl = $('#question');
 var answersFieldEl = $('#answers');
 var startButtonEl = $('#startButton');
 var reloadButtonEl = $('<button>)').attr('id', 'reloadButton').text('Try Again');
-// var highscoreSectionEl = $('.highscores');
 var containerClassEl = $('.container-fluid');
 var tempTextEl = $('<div>').attr('id', 'highscoreDiv');
 
@@ -31,15 +30,13 @@ var correctInx;
 
 if(typeof(savedHighscores) !== 'undefined' && savedHighscores != null) {
     highScores = savedHighscores;
-}
+};
 
 // timer length setting (in seconds)
-var timeCount = 10;
+var timeCount = 60;
 var timer;
 // tracks current question
 var currentQuestion = 0;
-// tracks if game is running
-var running = false;
 
 var quizItems = [
     {
@@ -67,22 +64,20 @@ var quizItems = [
         answers: ["x !== 8", "x === 8", "x === \"8\"", "x == Eight"],
         correctInx: 1
     }
-]
+];
 
 // object to hold users initials and highscore before pushing to array _highScores_
 var userStats = {
     initials: "",
-    score: 0    // time remaining is the score
-}
+    score: 0    // time remaining IS the score
+};
 
-//initialization programming
+// initialization
 function init() {
-    running = true;
     startButtonEl.hide();
     timer = setInterval(displayTimer, 1000);    // starts countdown
     questionFieldEl.text("");   // Clears question field of intro text
-    // if (currentQuestion < quizItems.length) {
-        getQuestion();
+    getQuestion();
 }
 
 // start button event listener
@@ -93,7 +88,7 @@ startButtonEl.on('click', function(){
 // reload button event listener, option to try again after loss
 reloadButtonEl.on('click', function(){
     location.reload();
-})
+});
 
 // Create a submit event listener located in the answerField
 answersFieldEl.on('click', '#submitId', handleFormSubmit);
@@ -114,7 +109,7 @@ function handleFormSubmit(event){
 
 
 
-// when user clicks start: display timer, pick random question and display it
+// displays timer, calls endGame() if time reaches 0 or below
 function displayTimer() {
     timeCount--;
     timerFieldEl.text(timeCount);
@@ -216,11 +211,12 @@ $('section.highScores').ready(function() {
             scoreLocation.append(tempTextEl);
             counter++;
         });
-        containerClassEl.append($('<hr><button id="eraseButton">Erase Data</button>')); // does nothing rn
+        containerClassEl.append($('<hr><button id="eraseButton">Erase Data</button>'));
 
         // Erase button handler, clears saved stats from localStorage
         $('#eraseButton').on('click', function(){
             localStorage.clear('stats');
+            location.reload();
         });
     }
 });
