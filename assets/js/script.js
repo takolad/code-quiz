@@ -152,7 +152,7 @@ function endGame() {
 
         let initialField = $('<div>').attr('id', 'initialDiv');
         initialField.text("Initials: ");
-        initialField.append($('<input name="initialsText">'));
+        initialField.append($('<input name="initialsText">').attr('maxlength', '3').css('text-transform', 'uppercase'));
         initialField.append($('<input type="Submit">').attr('id', 'submitId'));
         answersFieldEl.append(initialField);
     } else {
