@@ -1,7 +1,7 @@
-# hw4-code_quiz
+# code-quiz
 
 ## Description
-    A JavaScript powered timed, multiple choice, Code Quiz that dynamically updates HTML and CSS, 
+    A JavaScript powered, timed, multiple choice, Code Quiz that dynamically updates HTML and CSS, 
     as well as utilizes localStorage to store Highscores in the users system. jQuery was used to select elements  
     in the HTML and dynamically make changes.
 
@@ -11,4 +11,4 @@
    ![Site screenshot](assets/images/highscore_snap.png)
 
 ## Site Link
-   Link to [Code Quiz](https://takolad.github.io/hw4-code_quiz/).
+   Link to [Code Quiz](https://takolad.github.io/code-quiz/).
